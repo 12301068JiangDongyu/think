@@ -5,23 +5,20 @@ use think\Controller;
 use think\Session;
 use app\index\model\Note;
 
-class Index extends Controller
+class Deatil extends Controller
 {
-    public function index()
+    public function index($id)
     {
-
         if (!Session::has('user')) {
             return $this->error('请先登录', '/login');
         } 
 
         $user = Session::get('user');
-        $data['title'] = '首页';     
+        $data['title'] = '笔记详情';     
         $data['user'] = $user;
+        $note = Note::get(['id'=>$id]);
 
-        $notes = Note::all(['author'=>$user]);
-
-        $data['notes'] = $notes;
-
+        $data['note'] = $note;
         $this->assign('data', $data);
         return $this->fetch();
     }
